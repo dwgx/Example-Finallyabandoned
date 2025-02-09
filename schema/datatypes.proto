@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package com.diaoling.schema;
+
+import "google/protobuf/any.proto";
+
+option java_package = "com.diaoling.schema.datatype";
+option java_outer_classname = "Datatypes";
+
+message Type {
+    oneof value {
+        google.protobuf.Any any_value = 1;
+        string string_value = 2;
+        int32 int_value = 3;
+        bool bool_value = 4;
+        float float_value = 5;
+        double double_value = 6;
+        bytes bytes_value = 7;
+        int64 int64_value = 8;
+        uint32 uint32_value = 9;
+        uint64 uint64_value = 10;
+        fixed32 fixed32_value = 11;
+        fixed64 fixed64_value = 12;
+        sfixed32 sfixed32_value = 13;
+        sfixed64 sfixed64_value = 14;
+        int32 enum_index_value = 15;
+        Color color_value = 16;
+    }
+}
+
+message Pair {
+    Type key = 1;
+    Type value = 2;
+}
+
+message Color {
+    int32 red = 1;
+    int32 green = 2;
+    int32 blue = 3;
+    int32 alpha = 4;
+}
+
+message TypeCollection {
+    repeated Type values = 1;
+}

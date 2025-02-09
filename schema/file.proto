@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.diaoling.schema;
+
+option java_package = "com.diaoling.schema.file";
+option java_outer_classname = "FileSchema";
+
+enum FileType {
+    UNKNOWN_FILE = 0;
+    SETTINGS_CONFIG_FILE = 1;
+    MODULE_CONFIG_FILE = 2;
+    CLIENT_CONFIG_FILE = 3;
+}
+
+message BaseFile {
+    map<string, string> metadata = 1;
+    FileType type = 2;
+    int64 created_time = 3;
+    int64 modified_time = 4;
+    bytes context = 5;
+}

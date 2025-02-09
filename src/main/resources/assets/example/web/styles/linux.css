@@ -1,0 +1,196 @@
+@import url("../base.css");
+@import url("../custom.css");
+
+/* 整体背景和字体 */
+body {
+  background-color: #1a1a1a;  /* 深灰背景 */
+  color: #e2e2e2;  /* 字体颜色 */
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  transition: background-color 0.3s, color 0.3s;
+}
+body.light-mode {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* 工具栏 */
+.toolbar {
+  background-color: #333;
+  border-bottom: 2px solid #444;  /* 更加简洁的底边 */
+}
+.toolbar-left, .toolbar-right {
+  color: #e2e2e2;
+}
+
+/* 按钮 */
+button {
+  background-color: #444;
+  color: #fff;
+  border: 2px solid #666;
+  border-radius: 8px;  /* 半圆方形圆角 */
+  box-shadow: inset 0 1px 0 #222;
+  transition: all 0.2s ease, transform 0.2s ease; /* 添加缩放过渡 */
+}
+button:hover {
+  background-color: #555;
+  transform: scale(1.05);  /* 按钮缩放 */
+}
+
+/* 搜索框 */
+#searchInput {
+  background-color: #333;
+  color: #e2e2e2;
+  border: 2px solid #555;
+  border-radius: 8px;
+}
+
+/* 模块卡片 */
+.module-card {
+  position: relative;
+  background-color: #2c2c2c;
+  border: 2px solid #444;
+  box-shadow: 2px 2px 0 #222;
+  border-radius: 8px;  /* 半圆方形圆角 */
+  color: #e2e2e2;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.module-card:hover {
+  transform: translateY(-4px) scale(1.05);  /* 模块卡片缩放 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+.module-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 40%);
+  pointer-events: none;
+}
+.module-name { color: #fff; }
+.module-description { color: #ccc; }
+
+/* 灵动岛 */
+.dynamic-island {
+  border-bottom: 2px solid #444;  /* 保留底边 */
+  height: 60px;
+  border-radius: 8px;  /* 半圆方形圆角 */
+  transition: all 0.3s ease;
+  background-color: transparent; /* 去掉黑色背景 */
+}
+.dynamic-island:hover {
+  transform: none;  /* 取消缩放 */
+}
+
+/* 灵动岛主按钮 */
+.island-main-btn {
+  background-color: #444;
+  color: #e2e2e2;
+  padding: 8px 20px;
+  border: 2px solid #666;
+  border-radius: 8px;  /* 半圆方形圆角 */
+  box-shadow: inset 0 1px 0 #222;
+  transition: all 0.4s ease, transform 0.4s ease; 
+}
+.island-main-btn:hover {
+  background-color: #555;
+  filter: blur(1px);
+  transform: scale(1.05);
+}
+
+/* 灵动岛菜单 */
+.island-menu {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  transition: transform 0.4s ease, opacity 0.4s ease, scale 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(0.01);
+  background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+  border-radius: 8px;
+  padding: 5px 15px;
+  filter: blur(4px);
+  z-index: 0;
+}
+.island-menu:hover {
+  transform: translateX(-50%) scale(1.1);
+  opacity: 1;
+  pointer-events: auto;
+  filter: blur(0);
+}
+.dynamic-island:hover .island-main-btn {
+  display: none;
+}
+.dynamic-island:hover .island-menu {
+  transform: translateX(-50%) scale(1.1);
+  opacity: 1;
+  pointer-events: auto;
+  filter: blur(0);
+}
+.island-cat-btn {
+  background-color: #444;
+  color: #e2e2e2;
+  padding: 6px 14px;
+  border: 2px solid #666;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  font-size: 13px;
+  transform: translateX(20px);
+  opacity: 0;
+}
+.island-cat-btn:hover {
+  background-color: #555;
+}
+.dynamic-island:hover .island-menu .island-cat-btn {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* iOS开关风格 */
+.ios-switch {
+  background-color: #444;
+  border-radius: 8px;
+}
+.ios-switch .slider {
+  border: 2px solid #888;
+  border-radius: 8px;
+}
+.ios-switch input:checked + .slider {
+  background: #aaa;
+}
+
+/* 弹窗 & 设置面板 */
+.popup-content,
+.settings-content {
+  background-color: #2c2c2c;
+  border: 2px solid #444;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  color: #e2e2e2;
+}
+body.light-mode .popup-content,
+body.light-mode .settings-content {
+  background-color: #f0f0f0;
+  color: #000;
+  border-color: #444;
+}
+
+/* 可额外处理“blink光标”之类(示例) */
+body.linux-blink-cursor::after {
+  content: "";
+  position: fixed;
+  bottom: 5px; 
+  left: 5px;
+  width: 10px;
+  height: 20px;
+  background: #fff;
+  animation: blinkCursor 1s infinite alternate;
+}
+@keyframes blinkCursor {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

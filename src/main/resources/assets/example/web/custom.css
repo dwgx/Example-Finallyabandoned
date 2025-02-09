@@ -1,0 +1,81 @@
+@import url("base.css");
+:root {
+  --primary-color: #4f89ff;
+  --secondary-color: #e0e0e0;
+  --danger-color: #f55;
+  --border-radius: 8px;
+}
+body.light-mode .ios-switch input:checked + .slider {
+  background: linear-gradient(135deg, #4ade80, var(--primary-color));
+}
+body.dark-mode .ios-switch input:checked + .slider {
+  background: linear-gradient(135deg, #4ade80, var(--primary-color));
+}
+.modules-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+}
+.modules-edge {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+.modules-enter {
+  animation: modulesFadeSlideIn 0.35s ease;
+}
+@keyframes modulesFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#searchInput {
+  font-size: 14px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+body.light-mode #searchInput {
+  background-color: #fff;
+  color: #000;
+}
+body.dark-mode #searchInput {
+  background-color: #555;
+  color: #fff;
+  border-color: #444;
+}
+#searchInput:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+#messageBox {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background-color: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  display: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+#messageBox.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+#messageBox:not(.show) {
+  opacity: 0;
+  transform: translateY(-10px);
+}

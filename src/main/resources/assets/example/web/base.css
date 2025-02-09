@@ -1,0 +1,351 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #ddd;
+  border-bottom: 1px solid #ccc;
+}
+.toolbar-left {
+  font-size: 18px;
+  font-weight: bold;
+}
+.toolbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+button:hover {
+  opacity: 0.85;
+}
+.btn-secondary {
+  background-color: #eee;
+  color: #333;
+}
+.btn-primary {
+  background-color: #4f89ff;
+  color: #fff;
+}
+.btn-danger {
+  background-color: #f55;
+  color: #fff;
+}
+.dynamic-island {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+}
+.island-main-btn {
+  background-color: #ddd;
+  padding: 6px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.island-menu {
+  margin-left: 14px;
+  transition: all 0.5s ease;
+}
+.island-cat-btn {
+  background-color: #eee;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 0 3px;
+}
+.main-content {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+.module-card {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 10px;
+  transition: box-shadow 0.2s ease;
+}
+.module-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.module-name {
+  font-weight: bold;
+}
+.module-description {
+  font-size: 14px;
+  color: #333;
+}
+.module-controls {
+  margin-top: 10px;
+  text-align: right;
+}
+.btn-keybind {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.module-params {
+  margin-top: 8px;
+  /* 参数多时换行 */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.param-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+  flex: 1 1 220px; /* 宽度不足时换行 */
+}
+.param-row label {
+  white-space: nowrap;
+}
+.param-input {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 70px;
+  transition: border-color 0.2s ease;
+}
+.ios-switch {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  background-color: #ccc;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.ios-switch input {
+  display: none;
+}
+.ios-switch .slider {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+}
+.ios-switch input:checked + .slider {
+  left: 23px;
+}
+.ios-switch-mini {
+  width: 36px;
+  height: 18px;
+}
+.ios-switch-mini .slider {
+  width: 16px;
+  height: 16px;
+}
+.ios-switch-mini input:checked + .slider {
+  left: 18px;
+}
+#messageBox {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  display: none;
+  transition: opacity 0.3s ease;
+}
+#messageBox.show {
+  display: block;
+}
+#bindPopup,
+#settingsPanel {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#bindPopup.active,
+#settingsPanel.active {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+.popup-content,
+.settings-content {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  width: 320px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.popup-title,
+.settings-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.popup-desc {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.popup-btns,
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+.settings-row {
+  margin-bottom: 10px;
+}
+.settings-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+body.light-mode {
+  background-color: #f5f5f5;
+  color: #000;
+}
+body.dark-mode {
+  background-color: #343541;
+  color: #ececf1;
+}
+body.dark-mode .toolbar {
+  background-color: #40414f;
+  color: #ececf1;
+}
+body.dark-mode .module-description {
+  color: #ececf1;
+}
+body.dark-mode #messageBox {
+  background-color: rgba(0,0,0,0.8);
+}
+body.dark-mode .param-input {
+  background-color: #5a5c6b;
+  border-color: #444;
+  color: #fff;
+}
+body.dark-mode .dynamic-island .island-main-btn,
+body.dark-mode .dynamic-island .island-cat-btn {
+  background-color: #555;
+  color: #fff;
+}
+body.dark-mode .module-card {
+  background-color: #444653;
+  border-color: #555;
+}
+body.dark-mode .popup-content,
+body.dark-mode .settings-content {
+  background-color: #40414f;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+@media (max-width: 480px) {
+  .popup-content,
+  .settings-content {
+    width: 90%;
+  }
+}
+.modules-enter {
+  animation: modulesFadeSlideIn 0.35s ease;
+}
+@keyframes modulesFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.modules-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+}
+.modules-edge {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+.modules-edge .module-card {
+  flex: 0 1 300px;
+}
+#searchInput {
+  font-size: 14px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+body.light-mode #searchInput {
+  background-color: #fff;
+  color: #000;
+}
+body.dark-mode #searchInput {
+  background-color: #555;
+  color: #fff;
+  border-color: #444;
+}
+#searchInput:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+.number-input-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.param-range {
+  width: 80px;
+  accent-color: #4f89ff;
+}
+/* 卡片选中状态(通用，可各主题再覆盖) */
+.module-card.selected {
+  border: 2px solid #4f89ff;
+  box-shadow: 0 0 6px rgba(79,137,255,0.4);
+}

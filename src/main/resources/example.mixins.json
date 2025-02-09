@@ -1,0 +1,48 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.example.mod.injection.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"minecraft.client.KeyboardMixin",
+		"minecraft.client.MinecraftClientAccessor",
+		"minecraft.client.MinecraftClientMixin",
+		"minecraft.client.MouseMixin",
+		"minecraft.client.gui.hud.ChatHudLineMixin",
+		"minecraft.client.gui.hud.ChatHudLineVisibleMixin",
+		"minecraft.client.gui.hud.ChatHudMixin",
+		"minecraft.client.gui.hud.InGameHudMixin",
+		"minecraft.client.gui.screen.ChatInputSuggestorMixin",
+		"minecraft.client.gui.screen.ingame.CreativeInventoryScreenAccessor",
+		"minecraft.client.input.InputMixin",
+		"minecraft.client.input.KeyboardInputMixin",
+		"minecraft.client.network.ClientPlayerInteractionManagerMixin",
+		"minecraft.client.network.ClientPlayNetworkHandlerMixin",
+		"minecraft.client.option.KeyBindingAccessor",
+		"minecraft.client.render.CameraMixin",
+		"minecraft.client.render.GameRendererMixin",
+		"minecraft.client.render.RenderTickCounterDynamicMixin",
+		"minecraft.client.render.WorldRendererMixin",
+		"minecraft.client.render.entity.LivingEntityRendererMixin",
+		"minecraft.client.texture.PlayerSkinProviderAccessor",
+		"minecraft.client.texture.PlayerSkinProviderFileCacheAccessor",
+		"minecraft.client.util.InputUtilMixin",
+		"minecraft.client.util.WindowMixin",
+		"minecraft.client.world.ClientWorldMixin",
+		"minecraft.client.ClientPlayerEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
+		"minecraft.entity.EntityMixin",
+		"minecraft.entity.LimbAnimatorAccessor",
+		"minecraft.entity.LivingEntityAccessor",
+		"minecraft.entity.LivingEntityMixin",
+		"minecraft.entity.PlayerEntityMixin",
+		"minecraft.item.ItemMixin",
+		"minecraft.network.ClientConnectionMixin",
+		"minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacketMixin",
+		"minecraft.network.packet.c2s.play.PlayerMoveC2SPacketAccessor"
+	]
+}
