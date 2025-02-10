@@ -70,8 +70,7 @@ public class ModuleContainerStealer extends AbstractModule {
 
     @Handler
     public void onLivingEntityTick(LivingEntityTickEvent event) {
-        if (!event.isLocalPlayer() || !event.getState().equals(eventStateValue.getValue()))
-            return;
+        if (!event.isLocalPlayer() || !event.getState().equals(eventStateValue.getValue())) return;
         ScreenHandler handler = ScreenUtils.getHandler();
         if (handler instanceof GenericContainerScreenHandler containerHandler) {
             execute(containerHandler);
@@ -109,19 +108,24 @@ public class ModuleContainerStealer extends AbstractModule {
         List<Slot> candidates = handler.slots.stream()
                 .filter(s -> !(s.inventory instanceof PlayerInventory))
                 .filter(Slot::hasStack)
+                .filter(s -> !(s.getStack().getItem() instanceof BlockItem))
                 .collect(Collectors.toList());
+
         if (!selectBestValue.getValue()) {
             slots.addAll(candidates);
             filtered = true;
             return;
         }
+
         List<Slot> better = new ArrayList<>();
         for (Slot slot : candidates) {
             ItemStack stack = slot.getStack();
             int containerScore = getItemScore(stack);
             ItemMaterialType type = classifyItem(stack);
             int playerBest = getPlayerBestScoreFor(type);
-            if (containerScore > playerBest) {
+
+            // 放宽物品得分条件，允许选择稍微优于玩家当前装备的物品
+            if (containerScore >= playerBest) {
                 better.add(slot);
             }
         }
@@ -133,16 +137,26 @@ public class ModuleContainerStealer extends AbstractModule {
         if (stack.isEmpty()) return 0;
         int base = 0;
         String name = Registries.ITEM.getId(stack.getItem()).toString().toLowerCase(Locale.ROOT);
-        if (name.contains("netherite")) base += 20;
-        else if (name.contains("diamond")) base += 15;
-        else if (name.contains("iron")) base += 10;
-        else if (name.contains("gold")) base += 8;
-        else if (name.contains("chainmail")) base += 6;
-        else if (name.contains("leather")) base += 4;
+
+        // 调整评分门槛
+        if (name.contains("netherite")) base += 12; // 调整为12
+        else if (name.contains("diamond")) base += 10; // 调整为10
+        else if (name.contains("iron")) base += 7;  // 调整为7
+        else if (name.contains("golden") || name.contains("gold")) base += 5; // 调整为5
+        else if (name.contains("chainmail") || (name.contains("chain") && name.contains("mail"))) base += 4; // 调整为4
+        else if (name.contains("leather")) base += 3; // 调整为3
+
+        // 增加对工具和武器的评分
+        if (stack.getItem() instanceof MiningToolItem || stack.getItem() instanceof RangedWeaponItem) {
+            base += 2;  // 增加对工具和武器的评分
+        }
+
+        // 考虑物品的耐久度
         if (stack.getMaxDamage() > 0) {
             int remain = stack.getMaxDamage() - stack.getDamage();
-            base += (remain / 10);
+            base += (remain / 6); // 缩小耐久度评分的影响
         }
+
         return base;
     }
 
@@ -151,15 +165,11 @@ public class ModuleContainerStealer extends AbstractModule {
         PlayerInventory inv = mc.player.getInventory();
         for (EquipmentSlot eq : EquipmentSlot.values()) {
             ItemStack s = mc.player.getEquippedStack(eq);
-            if (!s.isEmpty() && classifyItem(s) == type) {
-                best = Math.max(best, getItemScore(s));
-            }
+            if (!s.isEmpty() && classifyItem(s) == type) best = Math.max(best, getItemScore(s));
         }
         for (int i = 0; i < inv.size(); i++) {
             ItemStack s = inv.getStack(i);
-            if (!s.isEmpty() && classifyItem(s) == type) {
-                best = Math.max(best, getItemScore(s));
-            }
+            if (!s.isEmpty() && classifyItem(s) == type) best = Math.max(best, getItemScore(s));
         }
         return best;
     }
@@ -184,7 +194,7 @@ public class ModuleContainerStealer extends AbstractModule {
             if (regName.contains("diamond")) return ItemMaterialType.DIAMOND;
             if (regName.contains("iron")) return ItemMaterialType.IRON;
             if (regName.contains("golden") || regName.contains("gold")) return ItemMaterialType.GOLD;
-            if (regName.contains("chainmail")) return ItemMaterialType.CHAINMAIL;
+            if (regName.contains("chainmail") || (regName.contains("chain") && regName.contains("mail"))) return ItemMaterialType.CHAINMAIL;
             if (regName.contains("leather")) return ItemMaterialType.LEATHER;
             return ItemMaterialType.OTHER;
         }

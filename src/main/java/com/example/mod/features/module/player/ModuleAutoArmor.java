@@ -6,17 +6,18 @@ import com.example.mod.events.entity.LivingEntityTickEvent;
 import com.example.mod.features.module.AbstractModule;
 import com.example.mod.features.task.impl.InventoryTask;
 import com.example.mod.utils.TickTimer;
-import com.example.mod.utils.player.ChatUtils;
 import com.example.utils.math.RandomUtils;
 import com.example.utils.pattern.Singleton;
 import com.example.value.BasicValue;
 import com.example.value.ChoiceValue;
 import com.example.value.RangeNumberValue;
+import com.example.mod.utils.player.ChatUtils;
 import net.engio.mbassy.listener.Handler;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -82,9 +83,7 @@ public class ModuleAutoArmor extends AbstractModule {
             EquipmentSlot slot = getSlotForArmor(stack);
             if (slot == null) continue;
             ItemStack current = bestMap.get(slot);
-            if (current == null || isBetterArmor(stack, current)) {
-                bestMap.put(slot, stack);
-            }
+            if (current == null || isBetterArmor(stack, current)) bestMap.put(slot, stack);
         }
         return bestMap;
     }
@@ -112,7 +111,7 @@ public class ModuleAutoArmor extends AbstractModule {
         else if (name.contains("diamond")) score += 15;
         else if (name.contains("iron")) score += 10;
         else if (name.contains("gold")) score += 8;
-        else if (name.contains("chainmail")) score += 6;
+        else if (name.contains("chainmail") || (name.contains("chain") && name.contains("mail"))) score += 6;
         else if (name.contains("leather")) score += 4;
         int remain = armor.getMaxDamage() - armor.getDamage();
         score += (remain / 10);
@@ -156,9 +155,7 @@ public class ModuleAutoArmor extends AbstractModule {
         for (int i = 0; i < inv.main.size(); i++) {
             ItemStack s = inv.main.get(i);
             if (s.isEmpty()) continue;
-            if (s.isOf(stack.getItem()) && s.getCount() == stack.getCount()) {
-                return i;
-            }
+            if (s.isOf(stack.getItem()) && s.getCount() == stack.getCount()) return i;
         }
         return -1;
     }

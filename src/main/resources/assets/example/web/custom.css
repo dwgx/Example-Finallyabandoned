@@ -1,16 +1,19 @@
-@import url("base.css");
 :root {
   --primary-color: #4f89ff;
   --secondary-color: #e0e0e0;
   --danger-color: #f55;
   --border-radius: 8px;
 }
+
+/* iOS 风格切换开关 */
 body.light-mode .ios-switch input:checked + .slider {
   background: linear-gradient(135deg, #4ade80, var(--primary-color));
 }
 body.dark-mode .ios-switch input:checked + .slider {
   background: linear-gradient(135deg, #4ade80, var(--primary-color));
 }
+
+/* 模块容器布局 */
 .modules-center {
   display: flex;
   flex-wrap: wrap;
@@ -18,6 +21,7 @@ body.dark-mode .ios-switch input:checked + .slider {
   align-items: flex-start;
   gap: 15px;
 }
+
 .modules-edge {
   display: flex;
   flex-wrap: wrap;
@@ -25,9 +29,12 @@ body.dark-mode .ios-switch input:checked + .slider {
   align-items: flex-start;
   gap: 15px;
 }
+
 .modules-enter {
   animation: modulesFadeSlideIn 0.35s ease;
 }
+
+/* 动画效果：模块进入时淡入并从下方滑入 */
 @keyframes modulesFadeSlideIn {
   0% {
     opacity: 0;
@@ -38,6 +45,8 @@ body.dark-mode .ios-switch input:checked + .slider {
     transform: translateY(0);
   }
 }
+
+/* 搜索框 */
 #searchInput {
   font-size: 14px;
   padding: 5px 10px;
@@ -45,19 +54,24 @@ body.dark-mode .ios-switch input:checked + .slider {
   border-radius: 4px;
   transition: background-color 0.2s, color 0.2s;
 }
+
 body.light-mode #searchInput {
   background-color: #fff;
   color: #000;
 }
+
 body.dark-mode #searchInput {
   background-color: #555;
   color: #fff;
   border-color: #444;
 }
+
 #searchInput:focus {
   outline: none;
   box-shadow: 0 0 3px rgba(0,0,0,0.3);
 }
+
+/* 弹出消息框 */
 #messageBox {
   position: fixed;
   top: 70px;
@@ -70,12 +84,47 @@ body.dark-mode #searchInput {
   transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 9999;
 }
+
 #messageBox.show {
   display: block;
   opacity: 1;
   transform: translateY(0);
 }
+
 #messageBox:not(.show) {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* 卡片模糊效果 */
+.card {
+  background-color: rgba(255, 255, 255, 0.2); /* 半透明白色 */
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(10px); /* 添加模糊效果 */
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05); /* 悬停时的放大效果 */
+}
+
+/* 关闭卡片模糊 */
+body.card-blur-off .card {
+  backdrop-filter: none;
+}
+
+/* iOS风格毛玻璃背景 */
+body.ios-blur-enabled {
+  backdrop-filter: blur(10px); /* 为 body 元素添加毛玻璃效果 */
+}
+
+/* 卡片的不同主题模式 */
+body.light-mode .card {
+  background-color: rgba(255, 255, 255, 0.3); /* 在光模式下卡片稍微更亮 */
+}
+
+body.dark-mode .card {
+  background-color: rgba(0, 0, 0, 0.3); /* 在暗模式下卡片稍微更暗 */
 }

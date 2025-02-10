@@ -3,136 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <title>WebClickGui</title>
-  <!-- 基础样式 -->
+  <!-- 基础样式、默认样式、定制样式 -->
   <link rel="stylesheet" href="base.css">
-  <!-- 默认空主题 (只导入base) -->
   <link rel="stylesheet" href="default.css">
-  <!-- 自定义覆盖样式 -->
   <link rel="stylesheet" href="custom.css">
-  <!-- 动态主题 (win98 / ios / linux / ...) -->
+  <!-- 动态主题样式 -->
   <link id="dynamic-styles" rel="stylesheet" href="">
-  <!-- 提示消息 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="light-mode">
-  <!-- 顶部工具栏 -->
-  <div class="toolbar">
-    <div class="toolbar-left">Modules Manager</div>
-    <div class="toolbar-right">
-      <input type="text" id="searchInput" placeholder="搜索模块...">
-      <button id="themeToggleBtn" class="btn-secondary">深色/浅色</button>
-      <button id="openSettingsBtn" class="btn-primary">设置</button>
+<body class="light-mode ios-blur-anim">
+<!-- 顶部工具栏 -->
+<div class="toolbar">
+  <div class="toolbar-left">Modules Manager</div>
+  <div class="toolbar-right">
+    <input type="text" id="searchInput" placeholder="搜索模块...">
+    <button id="themeToggleBtn" class="btn-secondary">深色/浅色</button>
+    <button id="openSettingsBtn" class="btn-primary">设置</button>
+  </div>
+</div>
+
+<!-- 灵动岛分类栏 -->
+<div id="dynamicIsland" class="dynamic-island">
+  <div id="islandMainBtn" class="island-main-btn">选择分类</div>
+  <div id="islandMenu" class="island-menu"></div>
+</div>
+
+<!-- 主内容 -->
+<div class="main-content">
+  <div id="modulesContainer" class="modules-grid"></div>
+</div>
+
+<!-- 消息提示 -->
+<div id="messageBox"></div>
+
+<!-- 快捷键绑定弹窗 -->
+<div id="bindPopup">
+  <div class="popup-content">
+    <div id="bindPopupTitle" class="popup-title"></div>
+    <div id="bindPopupDesc" class="popup-desc"></div>
+    <input type="text" id="bindInput" placeholder="按下快捷键...">
+    <div class="popup-btns">
+      <button id="bindConfirmBtn" class="btn-primary">确认</button>
+      <button id="bindCancelBtn" class="btn-secondary">取消</button>
+      <button id="bindUnbindBtn" class="btn-danger">解绑</button>
     </div>
   </div>
+</div>
 
-  <!-- 灵动岛分类栏 -->
-  <div id="dynamicIsland" class="dynamic-island">
-    <div id="islandMainBtn" class="island-main-btn">选择分类</div>
-    <div id="islandMenu" class="island-menu"></div>
-  </div>
-
-  <!-- 主内容 -->
-  <div class="main-content">
-    <div id="modulesContainer" class="modules-grid"></div>
-  </div>
-
-  <!-- 提示消息 -->
-  <div id="messageBox"></div>
-
-  <!-- 快捷键绑定弹窗 -->
-  <div id="bindPopup">
-    <div class="popup-content">
-      <div id="bindPopupTitle" class="popup-title"></div>
-      <div id="bindPopupDesc" class="popup-desc"></div>
-      <input type="text" id="bindInput" placeholder="按下快捷键...">
-      <div class="popup-btns">
-        <button id="bindConfirmBtn" class="btn-primary">确认</button>
-        <button id="bindCancelBtn" class="btn-secondary">取消</button>
-        <button id="bindUnbindBtn" class="btn-secondary btn-danger">解绑</button>
-      </div>
+<!-- 设置面板 -->
+<div id="settingsPanel">
+  <div class="settings-content">
+    <div class="settings-title">设置</div>
+    <!-- 色彩模式 -->
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="darkModeCheckbox">
+        <span>启用深色模式</span>
+      </label>
+    </div>
+    <!-- 音效开关 -->
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="soundEnableCheckbox">
+        <span>开关音效</span>
+      </label>
+    </div>
+    <!-- 启用音效 -->
+    <div class="settings-row">
+      <label>启用音效 URL / 本地:</label>
+      <input type="text" id="soundUrlEnable" placeholder="拖入音频文件或选择文件">
+      <input type="file" id="soundFileEnable" accept="audio/*">
+    </div>
+    <!-- 禁用音效 -->
+    <div class="settings-row">
+      <label>禁用音效 URL / 本地:</label>
+      <input type="text" id="soundUrlDisable" placeholder="拖入音频文件或选择文件">
+      <input type="file" id="soundFileDisable" accept="audio/*">
+    </div>
+    <!-- 背景图 -->
+    <div class="settings-row">
+      <label>自定义背景图 URL / 本地:</label>
+      <input type="text" id="bgUrlInput" placeholder="拖入图片或选择文件">
+      <input type="file" id="bgFileInput" accept="image/*">
+    </div>
+    <!-- 布局方向 -->
+    <div class="settings-row">
+      <label>布局方向:</label>
+      <select id="layoutSelector">
+        <option value="grid">网格(纵向)</option>
+        <option value="center">居中缩放</option>
+        <option value="edge">边缘分布</option>
+      </select>
+    </div>
+    <!-- 视觉样式 -->
+    <div class="settings-row">
+      <label>选择视觉样式:</label>
+      <select id="styleSelector"></select>
+    </div>
+    <!-- iOS 专属设置 -->
+    <div id="iosBlurRow" class="settings-row" style="display: none;">
+      <label>
+        <input type="checkbox" id="iosBlurCheckbox">
+        <span>iOS毛玻璃背景</span>
+      </label>
+    </div>
+    <!-- Win98 专属设置 -->
+    <div id="win98SetRow" class="settings-row" style="display: none;">
+      <label>
+        <input type="checkbox" id="win98AnimCheckbox">
+        <span>Win98 3D凸起动画</span>
+      </label>
+    </div>
+    <!-- Linux 专属设置 -->
+    <div id="linuxSetRow" class="settings-row" style="display: none;">
+      <label>
+        <input type="checkbox" id="linuxTerminalBlinkCheckbox">
+        <span>Linux终端闪烁</span>
+      </label>
+    </div>
+    <div class="settings-actions">
+      <button id="closeSettingsBtn" class="btn-secondary">关闭</button>
     </div>
   </div>
+</div>
 
-  <!-- 设置面板 -->
-  <div id="settingsPanel">
-    <div class="settings-content">
-      <div class="settings-title">设置</div>
-
-      <!-- 深色模式 -->
-      <div class="settings-row">
-        <label>
-          <input type="checkbox" id="darkModeCheckbox">
-          <span>启用深色模式</span>
-        </label>
-      </div>
-
-      <!-- 开关音效 -->
-      <div class="settings-row">
-        <label>
-          <input type="checkbox" id="soundEnableCheckbox">
-          <span>开关音效</span>
-        </label>
-      </div>
-
-      <!-- 分别设置启用/禁用音效URL -->
-      <div class="settings-row">
-        <label>启用音效 URL/本地:</label>
-        <input type="text" id="soundUrlEnable" placeholder="留空则不播放">
-      </div>
-      <div class="settings-row">
-        <label>禁用音效 URL/本地:</label>
-        <input type="text" id="soundUrlDisable" placeholder="留空则不播放">
-      </div>
-
-      <!-- 自定义背景图 -->
-      <div class="settings-row">
-        <label>自定义背景图 URL / 本地:</label>
-        <input type="text" id="bgUrlInput" placeholder="留空则取消">
-      </div>
-
-      <div class="settings-row">
-        <label>布局方向:</label>
-        <select id="layoutSelector">
-          <option value="grid">网格(纵向)</option>
-          <option value="center">居中缩放</option>
-          <option value="edge">边缘分布</option>
-        </select>
-      </div>
-
-      <div class="settings-row">
-        <label>选择视觉样式:</label>
-        <select id="styleSelector"></select>
-      </div>
-
-      <!-- 不同主题的专属设置 -->
-      <div id="iosBlurRow" class="settings-row" style="display: none;">
-        <label>
-          <input type="checkbox" id="iosBlurCheckbox">
-          <span>iOS毛玻璃背景</span>
-        </label>
-      </div>
-
-      <div id="win98SetRow" class="settings-row" style="display: none;">
-        <label>
-          <input type="checkbox" id="win98AnimCheckbox">
-          <span>Win98 3D凸起动画</span>
-        </label>
-      </div>
-
-      <div id="linuxSetRow" class="settings-row" style="display: none;">
-        <label>
-          <input type="checkbox" id="linuxTerminalBlinkCheckbox">
-          <span>Linux终端光标闪烁</span>
-        </label>
-      </div>
-
-      <div class="settings-actions">
-        <button id="closeSettingsBtn" class="btn-secondary">关闭</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="index.js"></script>
-  <script src="styleLoader.js"></script>
+<!-- 引入 JS 脚本 -->
+<script src="index.js"></script>
+<script src="styleLoader.js"></script>
 </body>
 </html>
