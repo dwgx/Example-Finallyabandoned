@@ -2074,7 +2074,7 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
         getModuleNameBytes();
 
     /**
-     * <code>int32 moduleKey = 3;</code>
+     * <code>int32 module_key = 3;</code>
      * @return The moduleKey.
      */
     int getModuleKey();
@@ -2195,10 +2195,10 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
       }
     }
 
-    public static final int MODULEKEY_FIELD_NUMBER = 3;
+    public static final int MODULE_KEY_FIELD_NUMBER = 3;
     private int moduleKey_ = 0;
     /**
-     * <code>int32 moduleKey = 3;</code>
+     * <code>int32 module_key = 3;</code>
      * @return The moduleKey.
      */
     @java.lang.Override
@@ -2316,7 +2316,7 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
       }
       hash = (37 * hash) + MODULE_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getModuleName().hashCode();
-      hash = (37 * hash) + MODULEKEY_FIELD_NUMBER;
+      hash = (37 * hash) + MODULE_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getModuleKey();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + status_;
@@ -2803,7 +2803,7 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
 
       private int moduleKey_ ;
       /**
-       * <code>int32 moduleKey = 3;</code>
+       * <code>int32 module_key = 3;</code>
        * @return The moduleKey.
        */
       @java.lang.Override
@@ -2811,7 +2811,7 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
         return moduleKey_;
       }
       /**
-       * <code>int32 moduleKey = 3;</code>
+       * <code>int32 module_key = 3;</code>
        * @param value The moduleKey to set.
        * @return This builder for chaining.
        */
@@ -2823,7 +2823,7 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
         return this;
       }
       /**
-       * <code>int32 moduleKey = 3;</code>
+       * <code>int32 module_key = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearModuleKey() {
@@ -3697,19 +3697,19 @@ com.diaoling.schema.datatype.Datatypes.Type defaultValue) {
       "seConfig\022C\n\010settings\030\002 \003(\01321.com.diaolin" +
       "g.schema.SettingsConfig.SettingsEntry\032J\n" +
       "\rSettingsEntry\022\013\n\003key\030\001 \001(\t\022(\n\005value\030\002 \001" +
-      "(\0132\031.com.diaoling.schema.Type:\0028\001\"\236\001\n\014Mo" +
+      "(\0132\031.com.diaoling.schema.Type:\0028\001\"\237\001\n\014Mo" +
       "duleConfig\0223\n\006config\030\001 \001(\0132#.com.diaolin" +
       "g.schema.SettingsConfig\022\023\n\013module_name\030\002" +
-      " \001(\t\022\021\n\tmoduleKey\030\003 \001(\005\0221\n\006status\030\004 \001(\0162" +
-      "!.com.diaoling.schema.ModuleStatus\"[\n\014Cl" +
-      "ientConfig\0223\n\006config\030\001 \001(\0132#.com.diaolin" +
-      "g.schema.SettingsConfig\022\026\n\016client_versio" +
-      "n\030\002 \001(\t*\226\001\n\014ModuleStatus\022\022\n\016UNKNOWN_STAT" +
-      "US\020\000\022\021\n\rACTIVE_STATUS\020\001\022\027\n\023ALWAY_ACTIVE_" +
-      "STATUS\020\002\022\023\n\017INACTIVE_STATUS\020\003\022\031\n\025ALWAY_I" +
-      "NACTIVE_STATUS\020\004\022\026\n\022MAINTENANCE_STATUS\020\005" +
-      "B*\n\032com.diaoling.schema.configB\014ConfigSc" +
-      "hemab\006proto3"
+      " \001(\t\022\022\n\nmodule_key\030\003 \001(\005\0221\n\006status\030\004 \001(\016" +
+      "2!.com.diaoling.schema.ModuleStatus\"[\n\014C" +
+      "lientConfig\0223\n\006config\030\001 \001(\0132#.com.diaoli" +
+      "ng.schema.SettingsConfig\022\026\n\016client_versi" +
+      "on\030\002 \001(\t*\226\001\n\014ModuleStatus\022\022\n\016UNKNOWN_STA" +
+      "TUS\020\000\022\021\n\rACTIVE_STATUS\020\001\022\027\n\023ALWAY_ACTIVE" +
+      "_STATUS\020\002\022\023\n\017INACTIVE_STATUS\020\003\022\031\n\025ALWAY_" +
+      "INACTIVE_STATUS\020\004\022\026\n\022MAINTENANCE_STATUS\020" +
+      "\005B*\n\032com.diaoling.schema.configB\014ConfigS" +
+      "chemab\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
