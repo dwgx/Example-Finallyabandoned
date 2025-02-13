@@ -57,7 +57,7 @@ public class TickTimer implements Initializable {
     }
 
     @Handler
-    public void onGameTick(LivingEntityTickEvent event) {
+    public void onLivingEntityTick(LivingEntityTickEvent event) {
         if (event.isLocalPlayer() && this.isRunning() && this.tickType.equals(TickType.LIVING_ENTITY) && this.getEventState().equals(event.getState()))  {
             this.tick++;
         }
