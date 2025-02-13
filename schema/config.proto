@@ -31,7 +31,7 @@ message SettingsConfig {
 message ModuleConfig {
     SettingsConfig config = 1;
     string module_name = 2;
-    int32 moduleKey = 3;
+    int32 module_key = 3;
     ModuleStatus status = 4;
 }
 
