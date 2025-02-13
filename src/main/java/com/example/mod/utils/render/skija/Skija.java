@@ -59,7 +59,7 @@ public class Skija {
                 (int) (width * dpi),
                 (int) (height * dpi),
                 /*samples*/ 0,
-                /*stencil*/ 8,
+                /*stencil*/ 16, // wowowowoowowowowowowowo sb
                 fbId,
                 FramebufferFormat.GR_GL_RGBA8
         );
