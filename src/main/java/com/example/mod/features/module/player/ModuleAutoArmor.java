@@ -26,18 +26,18 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class ModuleAutoArmor extends AbstractModule {
+    public ModuleAutoArmor() {
+        super("AutoArmor", "Auto", ModuleCategory.PLAYER);
+    }
 
     private final RangeNumberValue<Integer> delayValue = new RangeNumberValue<>("Delay", 1, 1, 0, 20, 1);
     private final ChoiceValue<Event.State> eventStateValue = new ChoiceValue<>("Event State", Arrays.asList(Event.State.values()), Event.State.PRE);
     private final BasicValue<Boolean> onlyInventoryOpen = new BasicValue<>("Only Inventory Open", false);
     private final BasicValue<Boolean> enableDebugger = new BasicValue<>("Enable Debugger", false);
+
     private final TickTimer tickTimer = new TickTimer();
     private boolean equipped, polled;
     private int nextDelay = -1;
-
-    public ModuleAutoArmor() {
-        super("AutoArmor", "Auto", ModuleCategory.PLAYER);
-    }
 
     @Override
     public void reset() {
@@ -49,12 +49,16 @@ public class ModuleAutoArmor extends AbstractModule {
 
     @Handler
     public void onLivingEntityTick(LivingEntityTickEvent event) {
-        if (!event.isLocalPlayer() || !event.getState().equals(eventStateValue.getValue())) return;
+        if (!event.isLocalPlayer() || (!this.eventStateValue.getValue().equals(Event.State.ANY) && !event.getState().equals(this.eventStateValue.getValue()))) {
+            return;
+        }
+
         if (onlyInventoryOpen.getValue() && !mc.player.currentScreenHandler.getType().getRequiredFeatures().isEmpty()) return;
-        equipBestArmorAsync();
+
+        execute();
     }
 
-    private void equipBestArmorAsync() {
+    private void execute() {
         if (!equipped) {
             CompletableFuture.runAsync(() -> {
                 Map<EquipmentSlot, ItemStack> bestArmorMap = getBestArmor();
@@ -65,10 +69,12 @@ public class ModuleAutoArmor extends AbstractModule {
             });
         }
         if (equipped && !tickTimer.isRunning()) tickTimer.start();
+
         if (tickTimer.isRunning() && !polled) {
             nextDelay = RandomUtils.randomInt(delayValue.getValue(), delayValue.getSecondValue());
             polled = true;
         }
+
         if (polled && tickTimer.hasElapsed(nextDelay)) reset();
     }
 
@@ -89,8 +95,8 @@ public class ModuleAutoArmor extends AbstractModule {
     }
 
     private EquipmentSlot getSlotForArmor(ItemStack stack) {
-        if (stack.getItem() instanceof ArmorItem) {
-            String s = stack.getItem().toString().toLowerCase(Locale.ROOT);
+        if (stack.getItem() instanceof ArmorItem armorItem) {
+            String s = armorItem.toString().toLowerCase(Locale.ROOT);
             if (s.contains("helmet")) return EquipmentSlot.HEAD;
             if (s.contains("chestplate")) return EquipmentSlot.CHEST;
             if (s.contains("leggings")) return EquipmentSlot.LEGS;
@@ -105,6 +111,7 @@ public class ModuleAutoArmor extends AbstractModule {
 
     private int getArmorScore(ItemStack armor) {
         if (armor.isEmpty()) return 0;
+
         int score = 0;
         String name = Registries.ITEM.getId(armor.getItem()).toString().toLowerCase(Locale.ROOT);
         if (name.contains("netherite")) score += 20;
@@ -120,32 +127,33 @@ public class ModuleAutoArmor extends AbstractModule {
 
     private void doEquip(Map<EquipmentSlot, ItemStack> bestArmorMap) {
         PlayerInventory inv = mc.player.getInventory();
+
         bestArmorMap.forEach((slot, armorStack) -> {
             ItemStack current = mc.player.getEquippedStack(slot);
-            logDebug("当前装备槽: " + slot + " 当前装备: " + current.getItem().getName().getString());
+            // logDebug("当前装备槽: " + slot + " 当前装备: " + current.getItem().getName().getString());
             if (current.isEmpty() || isBetterArmor(armorStack, current)) {
-                logDebug("装备更换: " + current.getItem().getName().getString() + " -> " + armorStack.getItem().getName().getString() + " (" + slot + ")");
+                // logDebug("装备更换: " + current.getItem().getName().getString() + " -> " + armorStack.getItem().getName().getString() + " (" + slot + ")");
                 int currentIndex = getInventorySlotForArmor(current);
                 if (currentIndex < 0) {
                     currentIndex = getArmorSlotIndex(slot);
-                    logDebug("当前装备不在主物品栏，使用装备槽索引: " + currentIndex);
+                    // logDebug("当前装备不在主物品栏，使用装备槽索引: " + currentIndex);
                 }
                 if (currentIndex >= 0) {
-                    logDebug("卸下装备: " + current.getItem().getName().getString() + " 从索引: " + currentIndex);
+                    // logDebug("卸下装备: " + current.getItem().getName().getString() + " 从索引: " + currentIndex);
                     new InventoryTask(SlotActionType.QUICK_MOVE, currentIndex).submit();
                 } else {
-                    logDebug("无法卸下当前装备: " + current.getItem().getName().getString());
+                    // logDebug("无法卸下当前装备: " + current.getItem().getName().getString());
                 }
                 int newIndex = inv.main.indexOf(armorStack);
                 if (newIndex < 0) {
-                    logDebug("装备 " + armorStack.getItem().getName().getString() + " 不在主物品栏，跳过");
+                    // logDebug("装备 " + armorStack.getItem().getName().getString() + " 不在主物品栏，跳过");
                     return;
                 }
                 int realSlot = newIndex < 9 ? newIndex + 36 : newIndex;
                 logDebug("换上装备: " + armorStack.getItem().getName().getString() + " 从索引: " + realSlot);
                 new InventoryTask(SlotActionType.QUICK_MOVE, realSlot).submit();
             } else {
-                logDebug("当前装备已经是最好的装备");
+                // logDebug("当前装备已经是最好的装备");
             }
         });
     }
@@ -161,18 +169,18 @@ public class ModuleAutoArmor extends AbstractModule {
     }
 
     private int getArmorSlotIndex(EquipmentSlot slot) {
-        switch (slot) {
-            case HEAD: return 5;
-            case CHEST: return 6;
-            case LEGS: return 7;
-            case FEET: return 8;
-            default: return -1;
-        }
+        return switch (slot) {
+            case HEAD -> 5;
+            case CHEST -> 6;
+            case LEGS -> 7;
+            case FEET -> 8;
+            default -> -1;
+        };
     }
 
     private void logDebug(String msg) {
         if (enableDebugger.getValue()) {
-            ChatUtils.display(Text.literal("AutoArmor: " + msg));
+            ChatUtils.display(Text.literal("AutoArmor"), Text.literal(msg));
         }
     }
 

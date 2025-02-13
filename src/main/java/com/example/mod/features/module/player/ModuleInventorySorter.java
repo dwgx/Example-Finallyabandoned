@@ -24,8 +24,7 @@ public class ModuleInventorySorter extends AbstractModule {
 
     @Handler
     public void onLivingEntityTick(LivingEntityTickEvent event) {
-        // TODO：Both event state
-        if (!event.isLocalPlayer() || !event.getState().equals(this.eventStateValue.getValue())) {
+        if (!event.isLocalPlayer() || (!this.eventStateValue.getValue().equals(Event.State.ANY) && !event.getState().equals(this.eventStateValue.getValue()))) {
             return;
         }
 

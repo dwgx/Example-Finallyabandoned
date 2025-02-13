@@ -70,7 +70,10 @@ public class ModuleContainerStealer extends AbstractModule {
 
     @Handler
     public void onLivingEntityTick(LivingEntityTickEvent event) {
-        if (!event.isLocalPlayer() || !event.getState().equals(eventStateValue.getValue())) return;
+        if (!event.isLocalPlayer() || (!this.eventStateValue.getValue().equals(Event.State.ANY) && !event.getState().equals(this.eventStateValue.getValue()))) {
+            return;
+        }
+
         ScreenHandler handler = ScreenUtils.getHandler();
         if (handler instanceof GenericContainerScreenHandler containerHandler) {
             execute(containerHandler);
