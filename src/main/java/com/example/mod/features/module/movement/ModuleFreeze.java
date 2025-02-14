@@ -41,7 +41,7 @@ public class ModuleFreeze extends AbstractModule {
     private Vec3d velocity;
     private int tick, rotationCount, teleportId;
     private BlockHitResult blockHitResult;
-    private boolean acceptTeleport;
+    private boolean acceptTeleport, needUpdate, needReset;
 
     @Override
     public void onEnable() {
@@ -67,6 +67,8 @@ public class ModuleFreeze extends AbstractModule {
         this.rotationCount = 0;
         this.teleportId = 0;
         this.blockHitResult = null;
+        this.needUpdate = false;
+        this.needReset = false;
     }
 
     @Handler
@@ -217,13 +219,33 @@ public class ModuleFreeze extends AbstractModule {
                 this.tick++;
             }
 
-            if (this.tickValue.getValue() == -1 || this.tick < this.tickValue.getValue()) {
+            if (!this.needUpdate && (this.tickValue.getValue() == -1 || this.tick < this.tickValue.getValue())) {
                 event.cancel();
             }
 
+            /*
+            if (this.needUpdate) {
+                NetworkUtils.sendPacketSilently(
+                        new PlayerMoveC2SPacket.PositionAndOnGround(
+                                mc.player.getX(),
+                                mc.player.getY(),
+                                mc.player.getZ(),
+                                mc.player.isOnGround(),
+                                mc.player.horizontalCollision
+                        )
+                );
+                this.needReset = true;
+            }
+
+            if (this.needReset) {
+                this.needUpdate = false;
+                this.needReset = false;
+            }
+             */
+
             float yaw = mc.player.getYaw();
             float pitch = mc.player.getPitch();
-            this.blockHitResult = TraceUtils.trace(new QAngle(yaw, pitch), 4.5f, 1.0f);
+            this.blockHitResult = TraceUtils.traceBlock(new QAngle(yaw, pitch), 4.5f, 1.0f);
         }
     }
 
@@ -256,6 +278,12 @@ public class ModuleFreeze extends AbstractModule {
                             this.teleportId
                     )
             );
+
+            /*
+            ChatUtils.display(Text.literal("Update player move."));
+
+            this.needUpdate = true;
+             */
 
             this.teleportId = 0;
             this.rotationCount = 0;
