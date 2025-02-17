@@ -2,12 +2,11 @@ package com.example.mod.utils.render.gl;
 
 import java.util.Stack;
 
-@Deprecated
-public class GLContextCacheManager {
-    private final Stack<GLContextCache> stack = new Stack<>();
+public class GLStateCacheManager {
+    private final Stack<GLStateCache> stack = new Stack<>();
 
     public void save() {
-        GLContextCache cache = new GLContextCache();
+        GLStateCache cache = new GLStateCache();
         cache.save();
         this.stack.push(cache);
     }
@@ -17,11 +16,11 @@ public class GLContextCacheManager {
             return;
         }
 
-        GLContextCache cache = this.stack.pop();
+        GLStateCache cache = this.stack.pop();
         cache.restore();
     }
 
-    public Stack<GLContextCache> getStateStack() {
+    public Stack<GLStateCache> getStateStack() {
         return stack;
     }
 }

@@ -6,6 +6,7 @@ import org.lwjgl.opengl.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class GLState {
     public int major = 0;
     public int minor = 0;

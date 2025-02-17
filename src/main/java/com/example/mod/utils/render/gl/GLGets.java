@@ -1,5 +1,6 @@
 package com.example.mod.utils.render.gl;
 
+@Deprecated
 public class GLGets {
     public int maxCombinedTextureImageUnits;
     public int maxDrawBuffers;

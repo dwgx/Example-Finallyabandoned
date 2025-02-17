@@ -2,6 +2,7 @@ package com.example.mod.utils.render.gl;
 
 import java.util.BitSet;
 
+@Deprecated
 public class RenderPrimitive {
     public static final int MAX_VERTEX_ATTRIBUTE_COUNT = 16;
 

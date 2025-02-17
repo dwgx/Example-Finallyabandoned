@@ -1,28 +1,24 @@
 package com.example.mod.utils.render.skija;
 
-import com.example.mod.utils.render.gl.GLContextCacheManager;
+import com.example.mod.utils.render.gl.GLStateCacheManager;
 import com.example.utils.pattern.Singleton;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.humbleui.skija.*;
 import io.github.humbleui.skija.impl.Stats;
 import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.util.Window;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL33;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
-import static com.example.mod.client.GameAccessor.mc;
+import static com.example.client.GameAccessor.mc;
 
 public class Skija {
     private static final Logger LOGGER = LoggerFactory.getLogger(Skija.class);
 
-    private final GLContextCacheManager cacheManager = new GLContextCacheManager();
+    private final GLStateCacheManager cacheManager = new GLStateCacheManager();
 
     private int width, height;
 
@@ -45,7 +41,7 @@ public class Skija {
         if (this.renderTarget != null) {
             this.renderTarget.close();
         }
-
+        
         Framebuffer framebuffer = mc.getFramebuffer();
 
         this.width = window.getFramebufferWidth();
@@ -59,7 +55,7 @@ public class Skija {
                 (int) (width * dpi),
                 (int) (height * dpi),
                 /*samples*/ 0,
-                /*stencil*/ 16, // wowowowoowowowowowowowo sb
+                /*stencil*/ 16, // 8
                 fbId,
                 FramebufferFormat.GR_GL_RGBA8
         );
@@ -87,59 +83,30 @@ public class Skija {
         this.initSkia(mc.getWindow());
     }
 
-    public void end() {
+    public void draw(Consumer<Canvas> consumer) {
         if (this.context == null) {
             return;
         }
 
-        this.context.resetAll();
+        this.cacheManager.save();
 
-        BufferRenderer.reset();
-        GL33.glBindSampler(0, 0);
+        RenderSystem.clearColor(0f, 0f, 0f, 0f);
 
-        RenderSystem.disableBlend();
+        this.context.resetGLAll();
 
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        RenderSystem.blendEquation(GL14.GL_FUNC_ADD);
-        RenderSystem.colorMask(true, true, true, true);
-        RenderSystem.depthMask(true);
-        RenderSystem.disableScissor();
-        // Maybe need ScissorStack
-
-        GL11.glDisable(GL11.GL_STENCIL_TEST);
-
-        RenderSystem.disableDepthTest();
-        RenderSystem.activeTexture(GL13.GL_TEXTURE0);
-
-        this.surface.flush();
-    }
-
-    public void begin() {
-        if (this.context == null) {
-            return;
-        }
+        this.canvas.save();
+        consumer.accept(this.canvas);
 
         RenderSystem.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
         RenderSystem.pixelStore(GL11.GL_UNPACK_SKIP_PIXELS, 0);
         RenderSystem.pixelStore(GL11.GL_UNPACK_SKIP_ROWS, 0);
         RenderSystem.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
 
-        RenderSystem.clearColor(0f, 0f, 0f, 0f);
-
         this.canvas.restore();
-    }
 
-    public void draw(Consumer<Canvas> consumer) {
-        if (this.context == null) {
-            return;
-        }
+        this.surface.flushAndSubmit();
 
-        this.begin();
-
-        // this.drawData.submit(consumer);
-        consumer.accept(this.canvas);
-
-        this.end();
+        this.cacheManager.restore();
     }
 
     public void render() {
@@ -155,31 +122,7 @@ public class Skija {
         }
     }
 
-/*
-    public void draw(Consumer<Canvas> consumer) {
-        if (this.context == null) {
-            return;
-        }
-        this.context.flush();
-
-        this.cacheManager.save();
-
-        RenderSystem.clearColor(0f, 0f, 0f, 0f);
-        this.context.resetGLAll();
-
-        // GL11.glDisable(GL11.GL_ALPHA_TEST);
-
-        consumer.accept(this.getCanvas());
-
-        SkijaDrawEvent event = new SkijaDrawEvent(this.surface, this.context, this.renderTarget, this.getCanvas());
-        Global.getEventBus().post(event).now();
-
-
-        this.cacheManager.restore();
-    }
- */
-
-    public GLContextCacheManager getCacheManager() {
+    public GLStateCacheManager getCacheManager() {
         return cacheManager;
     }
 

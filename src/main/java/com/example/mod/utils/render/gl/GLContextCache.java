@@ -7,6 +7,7 @@ import org.lwjgl.opengl.*;
 import java.util.Arrays;
 import java.util.Map;
 
+@Deprecated
 public class GLContextCache {
     private final GLState state = new GLState();
     private final GLGets gets = new GLGets();

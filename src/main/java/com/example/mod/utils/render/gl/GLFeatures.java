@@ -1,5 +1,6 @@
 package com.example.mod.utils.render.gl;
 
+@Deprecated
 public class GLFeatures {
     // Features
     public boolean multisampleTexture;
