@@ -28,15 +28,15 @@ public class PublicationErrorHandler implements IPublicationErrorHandler {
                 .append("Time                   : ").append(LocalDateTime.now().format(DATE_FORMATTER)).append("\n")
                 .append("Error Message          : ").append(error.getMessage()).append("\n")
                 .append("Cause                  : ")
-                .append(error.getCause() != null ? error.getCause().toString() : "N/A").append("\n")
+                .append(error.getCause().getCause() != null ? error.getCause().getCause().toString() : "N/A").append("\n")
                 .append("Listener               : ")
                 .append(error.getListener() != null ? error.getListener().toString() : "N/A").append("\n")
                 .append("Handler Context        : ")
                 .append(error.getHandler() != null ? error.getHandler().toString() : "N/A").append("\n")
                 .append("Stack Trace:\n");
 
-        if (error.getCause() != null) {
-            for (StackTraceElement element : error.getCause().getStackTrace()) {
+        if (error.getCause().getCause() != null) {
+            for (StackTraceElement element : error.getCause().getCause().getStackTrace()) {
                 errorMessage.append("\t- ").append(element.toString()).append("\n");
             }
         }
