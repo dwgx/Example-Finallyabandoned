@@ -28,6 +28,8 @@ import java.util.concurrent.Executors;
  * 3. 离线账号不可删除，若尝试删除则提示错误信息。
  * 4. 保持来回切换账号时的按钮状态正常，不需要刷新页面。
  */
+
+// 我觉得不应该叫这个
 public class MicrosoftHandler {
 
     private static final int PORT = 1337;

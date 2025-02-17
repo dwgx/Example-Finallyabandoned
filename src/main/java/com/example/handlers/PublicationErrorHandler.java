@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+// 为什么error.getCause().getCause()。因为这个是我的事件公交车拉的屎
 public class PublicationErrorHandler implements IPublicationErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(PublicationErrorHandler.class);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

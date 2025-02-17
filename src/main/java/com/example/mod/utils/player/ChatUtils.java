@@ -21,28 +21,23 @@ public class ChatUtils {
     public static void display(Text prefix, Text message, boolean overlay) {
         MutableText formatted = Text.empty().append(prefix).append(message);
 
-        Optional.ofNullable(mc.player).ifPresent(player -> player.sendMessage(formatted, overlay));
+        Optional.ofNullable(mc.player)
+                .ifPresent(player -> player.sendMessage(formatted, overlay));
     }
 
     public static void display(Text prefix, Text message) {
         display(prefix, message, false);
     }
 
-    //public static void display(Text message) {
-      //  display(ClientSettings.CHAT_PREFIX.getValue(), message, false);
-    //}
-
     public static void display(Text message) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        if (mc.player != null && mc.currentScreen == null) { // 仅在游戏内且没有打开 GUI 时显示
-            mc.player.sendMessage(message, false);
-        }
+        display(ClientSettings.CHAT_PREFIX.getValue(), message, false);
     }
 
     public static void display(Text prefix, Text message, int id) {
         MutableText formatted = Text.empty().append(prefix).append(message);
 
-        Optional.ofNullable(mc.inGameHud).ifPresent(inGameHud -> ((IChatHud) inGameHud.getChatHud()).example$addMessage(formatted, id));
+        Optional.ofNullable(mc.inGameHud)
+                .ifPresent(inGameHud -> ((IChatHud) inGameHud.getChatHud()).example$addMessage(formatted, id));
     }
 
     public static void display(Text message, int id) {

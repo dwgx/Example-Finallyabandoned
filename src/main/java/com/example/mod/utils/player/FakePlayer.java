@@ -25,6 +25,7 @@ public class FakePlayer extends OtherClientPlayerEntity {
         this.getAttributes().setFrom(player.getAttributes());
         this.setPose(player.getPose());
 
+        // TODO: 这个也是屎，我不知道怎么让他的四肢正常运作
 /*
         this.limbAnimator.setSpeed(player.limbAnimator.getSpeed());
         ((LimbAnimatorAccessor) this.limbAnimator).setPos(player.limbAnimator.getPos());

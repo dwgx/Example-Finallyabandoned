@@ -76,7 +76,6 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
                 ModuleBlockOutline.getInstance(),
                 ModuleWorldTime.getInstance(),
                 // Misc
-                ModuleProtocol.getInstance(),
                 ModuleDebug.getInstance(),
                 ModuleNetwork.getInstance(),
                 ModuleTimer.getInstance(),
