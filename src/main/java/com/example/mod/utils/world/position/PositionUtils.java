@@ -1,7 +1,7 @@
 package com.example.mod.utils.world.position;
 
 import com.example.entity.PositionEntity;
-import com.example.utils.filter.Filter;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

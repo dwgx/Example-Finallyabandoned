@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
-import static com.example.client.GameAccessor.mc;
+import static com.example.mod.client.GameAccessor.mc;
 
 public class Skija {
     private static final Logger LOGGER = LoggerFactory.getLogger(Skija.class);
