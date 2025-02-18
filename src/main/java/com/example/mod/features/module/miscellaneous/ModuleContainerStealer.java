@@ -111,7 +111,6 @@ public class ModuleContainerStealer extends AbstractModule {
         List<Slot> candidates = handler.slots.stream()
                 .filter(s -> !(s.inventory instanceof PlayerInventory))
                 .filter(Slot::hasStack)
-                .filter(s -> !(s.getStack().getItem() instanceof BlockItem))
                 .collect(Collectors.toList());
 
         if (!selectBestValue.getValue()) {
@@ -190,7 +189,6 @@ public class ModuleContainerStealer extends AbstractModule {
     }
 
     private ItemMaterialType classifyItem(ItemStack stack) {
-        if (stack.getItem() instanceof BlockItem) return ItemMaterialType.BLOCK;
         String regName = Registries.ITEM.getId(stack.getItem()).toString().toLowerCase(Locale.ROOT);
         if (stack.getItem() instanceof ArmorItem) {
             if (regName.contains("netherite")) return ItemMaterialType.NETHERITE;
@@ -216,7 +214,7 @@ public class ModuleContainerStealer extends AbstractModule {
     }
 
     private enum ItemMaterialType {
-        LEATHER, CHAINMAIL, GOLD, IRON, DIAMOND, NETHERITE, BLOCK, OTHER
+        LEATHER, CHAINMAIL, GOLD, IRON, DIAMOND, NETHERITE, OTHER
     }
 
     private void logDebug(String msg) {
