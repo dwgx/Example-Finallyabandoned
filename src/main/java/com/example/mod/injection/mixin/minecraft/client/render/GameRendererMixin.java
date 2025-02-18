@@ -58,7 +58,7 @@ public class GameRendererMixin {
             return original;
         }
 
-        return TraceUtils.trace(
+        return TraceUtils.traceBlock(
                 RotationManager.getInstance().getWorkingRotation().getAngle(),
                 MathHelper.absMax(blockInteractionRange, entityInteractionRange),
                 tickDelta

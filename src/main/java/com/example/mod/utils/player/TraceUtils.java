@@ -19,7 +19,7 @@ public class TraceUtils {
         return mc.world.raycast(context);
     }
 
-    private static BlockHitResult trace(QAngle angle, double range, RaycastContext.ShapeType shapeType, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
+    private static BlockHitResult traceBlock(QAngle angle, double range, RaycastContext.ShapeType shapeType, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
         Entity entity = mc.cameraEntity;
         if (entity == null) {
             return null;
@@ -30,18 +30,20 @@ public class TraceUtils {
         return traceBase(startPos, endPos, shapeType, fluidHandling, entity);
     }
 
-    public static BlockHitResult trace(QAngle angle, double range, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
-        return trace(angle, range, RaycastContext.ShapeType.OUTLINE, fluidHandling, tickDelta);
+    public static BlockHitResult traceBlock(QAngle angle, double range, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
+        return traceBlock(angle, range, RaycastContext.ShapeType.OUTLINE, fluidHandling, tickDelta);
     }
 
-    public static BlockHitResult trace(QAngle angle, double range, float tickDelta) {
-        return trace(angle, range, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, tickDelta);
+    public static BlockHitResult traceBlock(QAngle angle, double range, float tickDelta) {
+        return traceBlock(angle, range, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, tickDelta);
     }
 
-    public static List<BlockHitResult> trace(QAngle[] angles, double range, RaycastContext.ShapeType shapeType, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
+    public static List<BlockHitResult> traceBlock(QAngle[] angles, double range, RaycastContext.ShapeType shapeType, RaycastContext.FluidHandling fluidHandling, float tickDelta) {
         return java.util.Arrays.stream(angles)
-                .map(angle -> trace(angle, range, shapeType, fluidHandling, tickDelta))
+                .map(angle -> traceBlock(angle, range, shapeType, fluidHandling, tickDelta))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
+
+
 }
