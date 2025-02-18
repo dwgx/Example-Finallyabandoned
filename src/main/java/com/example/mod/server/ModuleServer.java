@@ -83,11 +83,14 @@ public class ModuleServer {
             String url = "http://localhost:8080";
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
-                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+                Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url});
+                // Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
             } else if (os.contains("mac")) {
-                Runtime.getRuntime().exec("open " + url);
+                Runtime.getRuntime().exec(new String[]{"open", url});
+                // Runtime.getRuntime().exec("open " + url);
             } else if (os.contains("nix") || os.contains("nux")) {
-                Runtime.getRuntime().exec("xdg-open " + url);
+                Runtime.getRuntime().exec(new String[]{"xdg-open", url});
+                // Runtime.getRuntime().exec("xdg-open " + url);
             }
         } catch (Exception e) {
             e.printStackTrace();

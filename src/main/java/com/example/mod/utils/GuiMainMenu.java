@@ -123,17 +123,15 @@ public class GuiMainMenu extends Screen {
         TextIconButtonWidget accessibilityButton = (TextIconButtonWidget)this.addDrawableChild(AccessibilityOnboardingButtons.createAccessibilityButton(20, (button) -> this.client.setScreen(new AccessibilityOptionsScreen(this, this.client.options)), true));
         accessibilityButton.setPosition(this.width / 2 + 104, l);
 
-        // Read.me按钮 - 放在右上角，1/4大小
         ButtonWidget button = ButtonWidget.builder(Text.of("Read.me"), (buttonWidget) -> {
-            Util.getOperatingSystem().open("https://www.l.wiki");  // 打开网页链接
-        }).dimensions(this.width -25, 0, 25, 15).build();  // 1/4大小：宽 24 高 5
+            Util.getOperatingSystem().open("https://www.l.wiki");
+        }).dimensions(this.width -25, 0, 25, 15).build();
         this.addDrawableChild(button);
         button.setFocused(false);
 
-        // 账户管理按钮 - 正方形，1/3大小，距离右下角40个像素
         ButtonWidget button2 = ButtonWidget.builder(Text.of("ACT"), (buttonWidget) -> {
             Util.getOperatingSystem().open("http://localhost:1337/manage");
-        }).dimensions(this.width - 110 ,this.height - 84, 20, 20).build();  // 正方形，宽 30 高 30，距离底部和右边40个像素
+        }).dimensions(this.width - 110 ,this.height - 84, 20, 20).build();
         this.addDrawableChild(button2);
         button2.setFocused(false);
 
@@ -158,12 +156,10 @@ public class GuiMainMenu extends Screen {
     }
 
     private int addNormalWidgets(int y, int spacingY) {
-        // Singleplayer Button
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button) -> this.client.setScreen(new SelectWorldScreen(this)))
                 .dimensions(this.width / 2 - 100, y, 200, 20)
                 .build());
 
-        // Multiplayer Button (with Tooltip)
         Text multiplayerDisabledText = this.getMultiplayerDisabledText();
         boolean multiplayerEnabled = multiplayerDisabledText == null;
         Tooltip multiplayerTooltip = multiplayerDisabledText != null ? Tooltip.of(multiplayerDisabledText) : null;
@@ -176,7 +172,6 @@ public class GuiMainMenu extends Screen {
         multiplayerButton.active = multiplayerEnabled;
         this.addDrawableChild(multiplayerButton);
 
-        // Online Button (Realms)
         buttonY += spacingY;
         ButtonWidget onlineButton = ButtonWidget.builder(Text.translatable("menu.online"), (button) -> this.client.setScreen(new RealmsMainScreen(this)))
                 .dimensions(this.width / 2 - 100, buttonY, 200, 20)
@@ -280,11 +275,10 @@ public class GuiMainMenu extends Screen {
 
             context.drawTextWithShadow(this.textRenderer, string, 2, this.height - 10, 16777215 | alpha);
 
-            // 绘制玩家名字在右下角.
-            String playerName = mc.getSession().getUsername();  // 获取玩家名字
-            int playerNameWidth = this.textRenderer.getWidth(playerName);  // 获取玩家名字宽度
-            int playerNameX = this.width - playerNameWidth ;  // 设置右下角位置
-            int playerNameY = this.height - 10;  // 距离底部10个像素
+            String playerName = mc.getSession().getUsername();
+            int playerNameWidth = this.textRenderer.getWidth(playerName);
+            int playerNameX = this.width - playerNameWidth ;
+            int playerNameY = this.height - 10;
 
             context.drawTextWithShadow(this.textRenderer, playerName, playerNameX, playerNameY, 16777215 | alpha);
 

@@ -6,6 +6,7 @@ import com.diaoling.schema.file.FileSchema;
 import com.example.information.AppInfo;
 import com.example.value.BasicValue;
 import com.google.protobuf.ByteString;
+import net.minecraft.entity.EntityType;
 import net.minecraft.text.MutableText;
 
 import java.awt.*;
@@ -56,6 +57,7 @@ public class ConfigUtils {
                 );
                 break;
             case AbstractCollection<?> collectionVal:
+                //
                 Datatypes.TypeCollection.Builder collectionBuilder = Datatypes.TypeCollection.newBuilder();
                 for (Object item : collectionVal) {
                     if (item instanceof BasicValue<?>) {
@@ -69,6 +71,9 @@ public class ConfigUtils {
                 break;
             case MutableText mutableText:
                 builder.setStringValue(mutableText.getString());
+                break;
+            case EntityType<?> entityType:
+
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
@@ -135,6 +140,10 @@ public class ConfigUtils {
                     // 将字符串转换为MutableText
                     value.setValue((T) net.minecraft.text.Text.literal(type.getStringValue()).asOrderedText());
                 }
+                break;
+
+            case EntityType<?> entityType:
+
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
