@@ -1,5 +1,8 @@
 package com.example.mod.managers;
 
+import com.diaoling.schema.ConfigUtils;
+import com.diaoling.schema.config.ConfigSchema;
+import com.diaoling.schema.file.FileSchema;
 import com.example.mod.enums.ModuleCategory;
 import com.example.mod.features.module.AbstractModule;
 import com.example.mod.features.module.exploit.ModuleNoPitchLimit;
@@ -10,11 +13,13 @@ import com.example.mod.features.module.player.ModuleInventorySorter;
 import com.example.mod.features.module.rage.*;
 import com.example.mod.features.module.visual.ModuleBlockOutline;
 import com.example.mod.features.module.visual.ModuleWorldTime;
+import com.example.mod.file.impl.FileModuleConfig;
 import com.example.utils.input.ShortcutKey;
 import com.example.utils.interfaces.Initializable;
 import com.example.utils.interfaces.Manageable;
 import com.example.utils.pattern.Singleton;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,8 +48,26 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
 
     @Override
     public boolean remove(AbstractModule element) {
-        // TODO: 保存逻辑
-        // 略去 FileModuleConfig 等细节
+        // 之前的版本被一位G先生去掉了 G先生已经被踢出项目了 G先生痛哭流涕。流出了100斤大蒜汁
+        ConfigSchema.ModuleConfig config = element.getConfig();
+
+        FileModuleConfig moduleConfig = new FileModuleConfig(
+                Path.of("modules", element.getConfigName()),
+                element,
+                FileSchema.FileType.MODULE_CONFIG_FILE,
+                ConfigUtils.makeBaseFile(
+                        Map.of(),
+                        FileSchema.FileType.CLIENT_CONFIG_FILE,
+                        System.currentTimeMillis(),
+                        System.currentTimeMillis(),
+                        config.toByteArray()
+                ),
+                config
+        );
+
+        FileManager.getInstance().add(
+                moduleConfig
+        );
         return modules.remove(element);
     }
 

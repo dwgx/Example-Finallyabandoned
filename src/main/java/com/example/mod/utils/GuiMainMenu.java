@@ -132,7 +132,7 @@ public class GuiMainMenu extends Screen {
 
         // 账户管理按钮 - 正方形，1/3大小，距离右下角40个像素
         ButtonWidget button2 = ButtonWidget.builder(Text.of("ACT"), (buttonWidget) -> {
-            Util.getOperatingSystem().open("http://localhost:1337/manage");  // 这里替换成你想要打开的URL
+            Util.getOperatingSystem().open("http://localhost:1337/manage");
         }).dimensions(this.width - 110 ,this.height - 84, 20, 20).build();  // 正方形，宽 30 高 30，距离底部和右边40个像素
         this.addDrawableChild(button2);
         button2.setFocused(false);

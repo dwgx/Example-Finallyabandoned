@@ -171,9 +171,11 @@ public class ModuleAttackBot extends AbstractModule {
                 this.scanRangeValue,
                 this.attackRangeValue,
                 this.fovValue,
+
                 // Protection
                 this.autoShieldValue,
                 this.autoShieldModeValue,
+
                 // Selection
                 this.entitiesValue
         );
