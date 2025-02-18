@@ -2,6 +2,7 @@ package com.example.mod.injection.mixin.minecraft.client.gui.hud;
 
 import com.example.Global;
 import com.example.mod.events.client.render.LayerRenderEvent;
+import com.example.mod.events.client.render.Render2DEvent;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
