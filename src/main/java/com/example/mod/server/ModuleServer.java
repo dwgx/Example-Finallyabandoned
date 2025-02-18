@@ -31,7 +31,8 @@ public class ModuleServer {
 
     public static void startServer() throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-        httpServer.createContext("/", new StaticFileHandler("gui"));
+        String guiPath = ModuleServer.class.getClassLoader().getResource("gui").getPath().substring(1);
+        httpServer.createContext("/", new StaticFileHandler(guiPath));
         httpServer.createContext("/modules", new ModulesHandler());
         httpServer.createContext("/modules/toggle", new ToggleModuleHandler());
         httpServer.createContext("/config/export", new ExportConfigHandler());
@@ -71,11 +72,27 @@ public class ModuleServer {
             @Override
             public void onStart() {
                 isWebSocketServerRunning = true;
+                openBrowser();
             }
         };
         wsServer.start();
     }
 
+    private static void openBrowser() {
+        try {
+            String url = "http://localhost:8080";
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec("open " + url);
+            } else if (os.contains("nix") || os.contains("nux")) {
+                Runtime.getRuntime().exec("xdg-open " + url);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private static void handleToggleModule(Map<String, Object> msg) {
         String moduleName = (String) msg.get("moduleName");
         Boolean enabled = (Boolean) msg.get("enabled");
