@@ -43,12 +43,14 @@ public class ConfigUtils {
                 builder.setEnumIndexValue(enumVal.ordinal());
                 break;
             case Color colorVal:
-                builder.setColorValue(Datatypes.Color.newBuilder()
-                        .setRed(colorVal.getRed())
-                        .setGreen(colorVal.getGreen())
-                        .setBlue(colorVal.getBlue())
-                        .setAlpha(colorVal.getAlpha())
-                        .build());
+                builder.setColorValue(
+                        Datatypes.Color.newBuilder()
+                                .setRed(colorVal.getRed())
+                                .setGreen(colorVal.getGreen())
+                                .setBlue(colorVal.getBlue())
+                                .setAlpha(colorVal.getAlpha())
+                                .build()
+                );
                 break;
             case AbstractCollection<?> collectionVal:
                 Datatypes.TypeCollection.Builder collectionBuilder = Datatypes.TypeCollection.newBuilder();
