@@ -1,6 +1,7 @@
 package com.example.mod.features.command.impl;
 
 import com.example.mod.features.command.AbstractCommand;
+import com.example.utils.pattern.Singleton;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.CommandSource;
@@ -13,14 +14,6 @@ public class CommandIRC extends AbstractCommand {
 
     public CommandIRC() {
         super("irc");
-    }
-
-    // 获取 CommandIRC 实例
-    public static CommandIRC getInstance() {
-        if (instance == null) {
-            instance = new CommandIRC();
-        }
-        return instance;
     }
 
     @Override
@@ -66,5 +59,9 @@ public class CommandIRC extends AbstractCommand {
     private void broadcastIrcMessage(String message) {
         // 这里你可以实现具体的广播消息到 IRC 频道的逻辑
         System.out.println("广播到 IRC: " + message); // TODO: 实际广播逻辑
+    }
+    
+    public static CommandIRC getInstance() {
+        return Singleton.getInstance(CommandIRC.class);
     }
 }
