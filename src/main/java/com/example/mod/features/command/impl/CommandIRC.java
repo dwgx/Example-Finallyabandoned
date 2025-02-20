@@ -60,7 +60,7 @@ public class CommandIRC extends AbstractCommand {
         // 这里你可以实现具体的广播消息到 IRC 频道的逻辑
         System.out.println("广播到 IRC: " + message); // TODO: 实际广播逻辑
     }
-    
+
     public static CommandIRC getInstance() {
         return Singleton.getInstance(CommandIRC.class);
     }

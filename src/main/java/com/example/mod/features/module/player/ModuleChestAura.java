@@ -1,4 +1,4 @@
-package com.example.mod.features.module.movement;
+package com.example.mod.features.module.player;
 
 import com.example.mod.datatypes.QAngle;
 import com.example.mod.datatypes.Rotation;
@@ -10,6 +10,7 @@ import com.example.mod.features.module.AbstractModule;
 import com.example.mod.managers.RotationManager;
 import com.example.utils.AbstractCallbackImpl;
 import com.example.utils.pattern.Singleton;
+import com.example.value.BasicValue;
 import com.example.value.NumberValue;
 import net.engio.mbassy.listener.Handler;
 import net.minecraft.client.MinecraftClient;
@@ -26,30 +27,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ModuleChestaura extends AbstractModule {
+public class ModuleChestAura extends AbstractModule {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
+
     private boolean autoRotate = true;
-    private boolean enableXray = true;
-    private NumberValue<Double> scanRadius = new NumberValue<>("Scan Radius", "The radius to scan for chests", 3.0, 3.0, 20.0, 1.0);
 
-    // 追踪已打开的箱子
+    private NumberValue<Double> scanRadiusValue = new NumberValue<>("Scan Radius", "The radius to scan for chests", 3.0, 3.0, 20.0, 1.0);
+
     private final Set<BlockPos> openedChests = new HashSet<>();
-
-    // 当前目标箱子
     private BlockPos currentTargetChest = null;
 
-    private boolean isEnabled = false; // 旋转开关
-
-    public ModuleChestaura() {
-        super("Chestaura", "自动转头并标记箱子", ModuleCategory.MOVEMENT);
+    public ModuleChestAura() {
+        super("ChestAura", "auto open", ModuleCategory.PLAYER);
     }
 
     @Override
     public void onEnable() {
-        super.onEnable();
-        isEnabled = true;  // 启用模块时设置标志位
-        System.out.println("ModuleChestaura enabled.");
-
         if (autoRotate) {
             scanAndRotateToChests();
         }
@@ -57,11 +50,6 @@ public class ModuleChestaura extends AbstractModule {
 
     @Override
     public void onDisable() {
-        super.onDisable();
-        isEnabled = false; // 禁用模块时设置标志位
-        System.out.println("ModuleChestaura disabled.");
-
-        // 重置当前目标
         currentTargetChest = null;
     }
 
@@ -69,9 +57,6 @@ public class ModuleChestaura extends AbstractModule {
      * 扫描附近的箱子并旋转玩家视角以面对第一个未打开的箱子。
      */
     private void scanAndRotateToChests() {
-        if (!isEnabled) return; // 确保模块启用时才执行
-
-        // 获取附近的箱子
         List<BlockPos> nearbyChests = getNearbyChests(mc.player);
         if (nearbyChests.isEmpty()) {
             System.out.println("No nearby chests found.");
@@ -86,7 +71,6 @@ public class ModuleChestaura extends AbstractModule {
                 QAngle angle = calculateRotationToChest(chestPos);
                 // 创建一个平滑旋转对象
                 Rotation rotation = new Rotation(angle, true, 0, CmdType.LOCAL, VelocityCorrection.NONE, new RotationCallback());
-                rotation.setStep(15f); // 设置旋转步长
                 rotation.submit();
                 break; // 处理一个箱子
             }
@@ -176,7 +160,6 @@ public class ModuleChestaura extends AbstractModule {
     }
 
 
-
     /**
      * 计算旋转角度以面对指定的箱子。
      */
@@ -203,17 +186,14 @@ public class ModuleChestaura extends AbstractModule {
         return new QAngle(yaw, pitch);
     }
 
-    /**
-     * 每 tick 更新，用于检查旋转状态。
-     */
-    @Handler
-    public void onGameTick(GameTickEvent event) {
-        if (isEnabled) {
-            RotationManager.getInstance().update();
-        }
+    @Override
+    public Set<BasicValue<?>> getValues() {
+        return Set.of(
+                this.scanRadiusValue
+        );
     }
 
-    public static ModuleChestaura getInstance() {
-        return Singleton.getInstance(ModuleChestaura.class);
+    public static ModuleChestAura getInstance() {
+        return Singleton.getInstance(ModuleChestAura.class);
     }
 }

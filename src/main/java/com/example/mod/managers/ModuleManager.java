@@ -9,6 +9,7 @@ import com.example.mod.features.module.exploit.ModuleNoPitchLimit;
 import com.example.mod.features.module.miscellaneous.*;
 import com.example.mod.features.module.movement.*;
 import com.example.mod.features.module.player.ModuleAutoArmor;
+import com.example.mod.features.module.player.ModuleChestAura;
 import com.example.mod.features.module.player.ModuleInventorySorter;
 import com.example.mod.features.module.rage.*;
 import com.example.mod.features.module.visual.ModuleBlockOutline;
@@ -96,8 +97,7 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
                 ModuleKeepSprint.getInstance(),
                 ModuleEagle.getInstance(),
                 ModuleNoSlow.getInstance(),
-                ModuleChestaura.getInstance(),
-                ModuleDISCSS2Cpacket.getInstance(),
+                ModuleChestAura.getInstance(),
 
                 // Visual
                 ModuleBlockOutline.getInstance(),
