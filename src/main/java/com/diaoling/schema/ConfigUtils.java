@@ -57,7 +57,6 @@ public class ConfigUtils {
                 );
                 break;
             case AbstractCollection<?> collectionVal:
-                //
                 Datatypes.TypeCollection.Builder collectionBuilder = Datatypes.TypeCollection.newBuilder();
                 for (Object item : collectionVal) {
                     if (item instanceof BasicValue<?>) {
