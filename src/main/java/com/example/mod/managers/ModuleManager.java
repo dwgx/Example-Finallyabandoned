@@ -79,11 +79,8 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
                 // Rage
                 ModuleAttackBot.getInstance(),
                 ModuleAntiKnockback.getInstance(),
-                ModuleHistory.getInstance(),
                 ModuleMultitask.getInstance(),
                 ModuleFakeLag.getInstance(),
-                ModuleBacktrack.getInstance(),
-                ModuleRag.getInstance(),
 
                 // Player
                 ModuleAutoArmor.getInstance(),
