@@ -40,6 +40,7 @@ public abstract class AbstractModule extends NamedEntity
         this.description = description;
         this.category = category;
         this.canToggle = canToggle;
+        this.shortcutKey = shortcutKey;
 
 
         // 咋可能不为null。这是构造函数
