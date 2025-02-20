@@ -141,7 +141,7 @@ public class ModuleChestAura extends AbstractModule {
         if (world == null) return List.of();
 
         List<BlockPos> chests = new ArrayList<>();
-        double radius = scanRadius.getValue(); // 使用 scanRadius 的值作为扫描半径
+        double radius = scanRadiusValue.getValue(); // 使用 scanRadius 的值作为扫描半径
 
         BlockPos playerPos = player.getBlockPos();
 
