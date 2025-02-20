@@ -43,57 +43,18 @@ public class SessionUtils {
         accessor.setSession(session);
 
         YggdrasilAuthenticationService authenticationService = new YggdrasilAuthenticationService(mc.getNetworkProxy());
+
         accessor.setAuthenticationService(authenticationService);
         SignatureVerifier.create(authenticationService.getServicesKeySet(), ServicesKeyType.PROFILE_KEY);
         MinecraftSessionService sessionService = authenticationService.createMinecraftSessionService();
         accessor.setSessionService(sessionService);
 
-        // --- SkinProvider initialization ---
-        PlayerSkinProvider currentProvider = mc.getSkinProvider();
-        PlayerSkinProvider newProvider = null;
-        Executor executor = Util.getMainWorkerExecutor();  // Use Minecraft's main worker executor
-
-        if (currentProvider != null) {
-            // If there is already a skin provider, try to re-create one using its cache directory.
-            PlayerSkinProvider.FileCache skinCache = ((PlayerSkinProviderAccessor) currentProvider).getSkinCache();
-            if (skinCache != null) {
-                Path cacheDirectory = ((PlayerSkinProviderFileCacheAccessor) skinCache).getDirectory();
-                newProvider = new PlayerSkinProvider(cacheDirectory, sessionService, executor);
-            } else {
-                System.out.println("【警告】皮肤缓存为空，无法从现有缓存重新初始化皮肤提供程序。");
-            }
-        }
-        if (newProvider == null) {
-            Path defaultDir = mc.runDirectory.toPath().resolve("cache/skins");
-            newProvider = new PlayerSkinProvider(defaultDir, sessionService, executor);
-        }
-        if (newProvider != null) {
-            accessor.setSkinProvider(newProvider);
-
-            // 安全地更新静态字段（如果存在的话）
-            try {
-                Field instanceField = null;
-                try {
-                    instanceField = PlayerSkinProvider.class.getDeclaredField("instance");
-                    instanceField.setAccessible(true);
-                    instanceField.set(null, newProvider);
-                } catch (NoSuchFieldException e) {
-                    // 如果找不到静态字段，则跳过更新
-                    System.out.println("【警告】没有找到静态字段 'instance'，无法更新 PlayerSkinProvider 实例");
-                }
-
-                if (instanceField == null) {
-                    // 处理没有找到字段的情况，可以选择记录日志或做其他操作
-                    System.out.println("【警告】PlayerSkinProvider 没有静态实例字段，跳过更新。");
-                }
-            } catch (Exception e) {
-                System.out.println("【警告】无法更新玩家皮肤提供程序静态实例：");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("【错误】无法创建玩家皮肤提供程序实例");
-        }
-        // --- End SkinProvider initialization ---
+        PlayerSkinProvider.FileCache skinCache = ((PlayerSkinProviderAccessor) mc.getSkinProvider()).getSkinCache();
+        accessor.setSkinProvider(new PlayerSkinProvider(
+                ((PlayerSkinProviderFileCacheAccessor) skinCache).getDirectory(),
+                sessionService,
+                mc
+        ));
 
         accessor.setUserApiService(accessor.getAuthenticationService().createUserApiService(session.getAccessToken()));
         accessor.setSocialInteractionsManager(new SocialInteractionsManager(mc, accessor.getUserApiService()));
