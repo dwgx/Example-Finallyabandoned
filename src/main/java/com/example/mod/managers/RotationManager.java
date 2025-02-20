@@ -111,13 +111,7 @@ public class RotationManager {
         return getWorkingRotation() != null;
     }
 
-    public void offerSilent(Rotation rotation) {
-        // 更新本地旋转数据
-        this.serverRotation = new Vector2f(rotation.getYaw(), rotation.getPitch());
-
-        // 可以更新工作旋转等其他状态
-        this.workingRotation = rotation;
-    }
+    // see CmdType
 
     public CmdType getCmdType() {
         return isRotating() ? getWorkingRotation().getCmdType() : CmdType.NOOP;
