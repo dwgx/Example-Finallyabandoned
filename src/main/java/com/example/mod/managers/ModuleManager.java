@@ -12,6 +12,7 @@ import com.example.mod.features.module.player.ModuleAutoArmor;
 import com.example.mod.features.module.player.ModuleInventorySorter;
 import com.example.mod.features.module.rage.*;
 import com.example.mod.features.module.visual.ModuleBlockOutline;
+import com.example.mod.features.module.visual.ModuleHUD;
 import com.example.mod.features.module.visual.ModuleWorldTime;
 import com.example.mod.file.impl.FileModuleConfig;
 import com.example.utils.input.ShortcutKey;
@@ -82,9 +83,11 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
                 ModuleFakeLag.getInstance(),
                 ModuleBacktrack.getInstance(),
                 ModuleRag.getInstance(),
+
                 // Player
                 ModuleAutoArmor.getInstance(),
                 ModuleInventorySorter.getInstance(),
+
                 // Movement
                 ModuleSprint.getInstance(),
                 ModuleGuiMove.getInstance(),
@@ -95,14 +98,18 @@ public class ModuleManager implements Initializable, Manageable<AbstractModule> 
                 ModuleNoSlow.getInstance(),
                 ModuleChestaura.getInstance(),
                 ModuleDISCSS2Cpacket.getInstance(),
+
                 // Visual
                 ModuleBlockOutline.getInstance(),
                 ModuleWorldTime.getInstance(),
+                ModuleHUD.getInstance(),
+
                 // Misc
                 ModuleDebug.getInstance(),
                 ModuleNetwork.getInstance(),
                 ModuleTimer.getInstance(),
                 ModuleContainerStealer.getInstance(),
+
                 // Exploit
                 ModuleNoPitchLimit.getInstance()
         );
