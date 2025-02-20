@@ -89,10 +89,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${jupiter_version}")
     testImplementation("org.junit.jupiter:junit-jupiter:${jupiter_version}")
 
-    implementation group: 'io.github.humbleui', name: 'skija-shared', version: '0.116.4'
-    implementation group: 'io.github.humbleui', name: 'skija-windows-x64', version: '0.116.4'
-    implementation group: 'io.github.humbleui', name: 'types', version: '0.2.0'
-    
     dependency("org.luaj:luaj-jse:3.0.1")
 
     dependency("net.raphimc:MinecraftAuth:4.1.1")

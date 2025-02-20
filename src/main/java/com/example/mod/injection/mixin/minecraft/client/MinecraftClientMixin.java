@@ -9,7 +9,6 @@ import com.example.mod.events.client.world.JoinWorldEvent;
 import com.example.mod.events.screen.ScreenEvent;
 import com.example.mod.features.module.rage.ModuleMultitask;
 import com.example.mod.utils.GuiMainMenu;
-import com.example.mod.utils.render.skija.Skija;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
@@ -153,29 +152,5 @@ public class MinecraftClientMixin {
         if (event.isCanceled()) {
             ci.cancel();
         }
-    }
-
-    @Inject(
-            method = "onResolutionChanged",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gl/Framebuffer;resize(II)V",
-                    shift = At.Shift.AFTER
-            )
-    )
-    private void onResolutionChangedFramebufferResize(CallbackInfo ci) {
-        Skija.getInstance().resize();
-        // Skija.getInstance().draw();
-    }
-
-    @Inject(
-            method = "render",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gl/Framebuffer;draw(II)V"
-            )
-    )
-    private void onRenderFramebufferDraw(CallbackInfo ci) {
-        // Skija.getInstance().draw();
     }
 }

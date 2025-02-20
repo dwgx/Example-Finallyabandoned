@@ -10,8 +10,6 @@ import com.example.mod.managers.CommandManager;
 import com.example.mod.managers.FileManager;
 import com.example.mod.managers.ModuleManager;
 import com.example.mod.storage.PacketStorage;
-import com.example.mod.utils.render.skija.Skija;
-import com.example.mod.utils.render.skija.text.Texts;
 import com.example.utils.pattern.Singleton;
 import com.example.utils.text.StringUtils;
 import net.minecraft.util.profiler.Profiler;
@@ -38,20 +36,6 @@ public class ClientHandler {
             profiler.swap(StringUtils.profilerTag("eventbus", "register"));
             Global.getEventBus().subscribe(EventHandler.getInstance());
             Global.getEventBus().subscribe(PacketStorage.getInstance());
-
-            try {
-                profiler.swap(StringUtils.profilerTag("skija", "init"));
-                Skija.getInstance().initSkia(mc.getWindow());
-            } catch (Throwable throwable) {
-                ExceptionHandler.getInstance().handle(Thread.currentThread(), throwable);
-            }
-
-            try {
-                profiler.swap(StringUtils.profilerTag("texts", "init"));
-                Texts.init();
-            } catch (Throwable throwable) {
-                ExceptionHandler.getInstance().handle(Thread.currentThread(), throwable);
-            }
 
             profiler.swap(StringUtils.profilerTag("file", "client", "settings"));
             ConfigSchema.ClientConfig clientConfig = ClientSettings.getInstance().getConfig();
@@ -89,17 +73,13 @@ public class ClientHandler {
     }
 
     public void shutdown() {
-        try {
-            microsoftHandler.shutdown();
-            Profiler profiler = Profilers.get();
-            profiler.swap(StringUtils.profilerTag("managers", "destroy"));
-            ModuleManager.getInstance().destroy();
-            CommandManager.getInstance().destroy();
-            FileManager.getInstance().destroy();
-            profiler.pop();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        microsoftHandler.shutdown();
+        Profiler profiler = Profilers.get();
+        profiler.swap(StringUtils.profilerTag("managers", "destroy"));
+        ModuleManager.getInstance().destroy();
+        CommandManager.getInstance().destroy();
+        FileManager.getInstance().destroy();
+        profiler.pop();
     }
 
     public static ClientHandler getInstance() {

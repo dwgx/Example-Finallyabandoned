@@ -10,17 +10,12 @@ import com.example.mod.events.network.PacketEvent;
 import com.example.mod.features.module.AbstractModule;
 import com.example.mod.utils.player.ChatUtils;
 import com.example.mod.utils.player.FakePlayer;
-import com.example.mod.utils.render.skija.SkijaRenderer;
-import com.example.mod.utils.render.skija.text.Texts;
 import com.example.utils.pattern.Singleton;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Tlhelp32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
-import io.github.humbleui.skija.Font;
-import io.github.humbleui.skija.Paint;
 import net.engio.mbassy.listener.Handler;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.Packet;
@@ -168,24 +163,6 @@ public class ModuleDebug extends AbstractModule {
         }
          */
     }
-    private Font font = new Font(Texts.makeFace(Texts.makeData("jet-brains-mono_regular", "ttf")), 30);
-
-    @Handler
-    public void onRenderLayer(LayerRenderEvent event) {
-        if (MinecraftClient.getInstance().world != null) {
-            Paint paint = new Paint().setARGB(255, 255, 255, 255);
-
-            SkijaRenderer.drawText(
-                    "Hello, World!", 50, 50, font, paint
-            );
-
-            SkijaRenderer.drawRRect(
-                    50, 60, (float) mc.getWindow().getWidth() / 2, (float) mc.getWindow().getHeight() / 2, 4, paint
-            );
-        }
-    }
-
-
 
     @Handler
     public void onRenderWorld(WorldRenderEvent event) {
