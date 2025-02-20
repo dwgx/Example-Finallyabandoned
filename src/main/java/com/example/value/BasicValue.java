@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 基础 Value，用于存储任意类型 T，并带有 children 机制
+ */
 public class BasicValue<T> {
     private final String name;
     private final String description;
@@ -50,9 +53,7 @@ public class BasicValue<T> {
     public void setValue(T value) {
         lock.writeLock().lock();
         try {
-            if (value != null) {
-                this.value = value;
-            }
+            this.value = value;
         } finally {
             lock.writeLock().unlock();
         }
@@ -62,6 +63,7 @@ public class BasicValue<T> {
         setValue(defaultValue);
     }
 
+    // children 相关(可选)
     public BasicValue<T> child(BasicValue<T> child) {
         lock.writeLock().lock();
         try {
