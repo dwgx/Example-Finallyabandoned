@@ -10,15 +10,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.text.MutableText;
 
 import java.awt.*;
-import java.util.AbstractCollection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConfigUtils {
     public static Datatypes.Type toType(BasicValue<?> value) {
         Datatypes.Type.Builder builder = Datatypes.Type.newBuilder();
-
         Object object = value.getValue();
 
         switch (object) {
@@ -47,14 +43,12 @@ public class ConfigUtils {
                 builder.setEnumIndexValue(enumVal.ordinal());
                 break;
             case Color colorVal:
-                builder.setColorValue(
-                        Datatypes.Color.newBuilder()
-                                .setRed(colorVal.getRed())
-                                .setGreen(colorVal.getGreen())
-                                .setBlue(colorVal.getBlue())
-                                .setAlpha(colorVal.getAlpha())
-                                .build()
-                );
+                builder.setColorValue(Datatypes.Color.newBuilder()
+                        .setRed(colorVal.getRed())
+                        .setGreen(colorVal.getGreen())
+                        .setBlue(colorVal.getBlue())
+                        .setAlpha(colorVal.getAlpha())
+                        .build());
                 break;
             case AbstractCollection<?> collectionVal:
                 Datatypes.TypeCollection.Builder collectionBuilder = Datatypes.TypeCollection.newBuilder();
@@ -72,7 +66,6 @@ public class ConfigUtils {
                 builder.setStringValue(mutableText.getString());
                 break;
             case EntityType<?> entityType:
-
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
@@ -83,8 +76,15 @@ public class ConfigUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> void setValue(Datatypes.Type type, BasicValue<T> value) {
-        Object object = value.getValue();
+        if (value == null || value.getValue() == null) {
+            return;
+        }
 
+        if (type == null) {
+            return;
+        }
+
+        Object object = value.getValue();
         switch (object) {
             case Integer intVal:
                 value.setValue((T) Integer.valueOf(type.getIntValue()));
@@ -108,44 +108,53 @@ public class ConfigUtils {
                 value.setValue((T) type.getBytesValue().toByteArray());
                 break;
             case Enum<?> enumVal:
-                // TODO：fix java.lang.IllegalArgumentException: Value must be one of the available options.
-                // value.setValue((T) Long.valueOf(enumVal.ordinal()));
-
-                // 2024.1.26 Maybe fix
-                value.setValue((T) ((Enum[]) enumVal.getClass().getEnumConstants())[type.getEnumIndexValue()]);
-
+                Enum<?>[] enumConstants = (Enum<?>[]) enumVal.getClass().getEnumConstants();
+                int index = type.getEnumIndexValue();
+                if (index >= 0 && index < enumConstants.length) {
+                    value.setValue((T) enumConstants[index]);
+                } else {
+                    throw new IllegalArgumentException("setValue 方法接收到的 Enum 索引超出范围：" + index);
+                }
                 break;
             case Color colorVal:
-                value.setValue((T) new Color(type.getColorValue().getRed(), type.getColorValue().getGreen(), type.getColorValue().getBlue(), type.getColorValue().getAlpha()));
+                if (type.hasColorValue()) {
+                    value.setValue((T) new Color(
+                            type.getColorValue().getRed(),
+                            type.getColorValue().getGreen(),
+                            type.getColorValue().getBlue(),
+                            type.getColorValue().getAlpha()
+                    ));
+                }
                 break;
             case AbstractCollection<?> collectionVal:
                 if (type.hasAnyValue()) {
                     try {
                         Datatypes.TypeCollection collection = type.getAnyValue().unpack(Datatypes.TypeCollection.class);
-                        AbstractCollection<Object> targetCollection = (AbstractCollection<Object>) collectionVal;
+                        AbstractCollection<Object> targetCollection = (collectionVal instanceof AbstractCollection)
+                                ? new ArrayList<>(collectionVal)
+                                : (AbstractCollection<Object>) collectionVal;
+
                         targetCollection.clear();
                         for (Datatypes.Type itemType : collection.getValuesList()) {
                             BasicValue<Object> tempValue = new BasicValue<>("item", null);
                             setValue(itemType, tempValue);
                             targetCollection.add(tempValue.getValue());
                         }
+                        value.setValue((T) targetCollection);
                     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                        throw new IllegalArgumentException("Failed to unpack collection value", e);
+                        throw new IllegalArgumentException("setValue 方法无法解析集合值", e);
                     }
                 }
                 break;
             case MutableText mutableText:
                 if (type.hasStringValue()) {
-                    // 将字符串转换为MutableText
                     value.setValue((T) net.minecraft.text.Text.literal(type.getStringValue()).asOrderedText());
                 }
                 break;
-
             case EntityType<?> entityType:
-
                 break;
             default:
-                throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
+                throw new IllegalArgumentException("setValue 方法接收到不支持的类型：" + object.getClass().getName());
         }
     }
 
@@ -181,26 +190,13 @@ public class ConfigUtils {
 
     public static ConfigSchema.SettingsConfig makeSettingConfig(String name, String description, String creator, String version, Map<String, Datatypes.Type> settings) {
         return ConfigSchema.SettingsConfig.newBuilder()
-                .setBaseConfig(
-                        makeBaseConfig(
-                                name,
-                                description,
-                                creator,
-                                version
-                        )
-                )
+                .setBaseConfig(makeBaseConfig(name, description, creator, version))
                 .putAllSettings(settings)
                 .build();
     }
 
     public static ConfigSchema.SettingsConfig makeSettingConfig(String name, String description, Map<String, Datatypes.Type> settings) {
-        return makeSettingConfig(
-                name,
-                description,
-                AppInfo.AUTHOR,
-                AppInfo.VERSION.toString(),
-                settings
-        );
+        return makeSettingConfig(name, description, AppInfo.AUTHOR, AppInfo.VERSION.toString(), settings);
     }
 
     public static Datatypes.Type.Builder typeBuilder() {
