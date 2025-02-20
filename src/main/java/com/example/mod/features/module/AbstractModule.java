@@ -41,6 +41,9 @@ public abstract class AbstractModule extends NamedEntity
         this.category = category;
         this.canToggle = canToggle;
 
+
+        // 咋可能不为null。这是构造函数
+  /*
         // 修复关键：这里要自己 new 一个对象，而不是直接赋值(避免共享一个 static final)
         if (shortcutKey == null) {
             this.shortcutKey = new ShortcutKey(-1);
@@ -51,6 +54,7 @@ public abstract class AbstractModule extends NamedEntity
                     shortcutKey.getActionType()
             );
         }
+   */
 
         setState(defaultState);
     }
